@@ -13,10 +13,11 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_cmake_run(
     REQUIRES
         cpprestsdk/2.10.14@bincrafters/stable
+        fmt/5.3.0@bincrafters/stable
     BASIC_SETUP CMAKE_TARGETS
     BUILD missing
 )
 # -------------------------------------------
 
 add_executable(http_get main.cpp)
-target_link_libraries(http_get CONAN_PKG::cpprestsdk)
+target_link_libraries(http_get CONAN_PKG::cpprestsdk CONAN_PKG::fmt)
