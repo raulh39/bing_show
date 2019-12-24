@@ -1,5 +1,5 @@
-#include <iostream>
+#include <cpprest/http_client.h>
 
-int main(int, char**) {
-    std::cout << "Hello, world!\n";
+int main()
+{
 }
