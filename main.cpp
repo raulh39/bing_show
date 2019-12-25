@@ -1,6 +1,6 @@
 #include <cpprest/http_client.h>
-#include <cpprest/filestream.h>
 #include <fmt/printf.h>
+#include <Magick++.h>
 
 int main()
 {
@@ -27,13 +27,9 @@ int main()
         auto filename = web::uri::split_query(image_uri.query())["id"];
         fmt::print("Image filename: {}\n", filename);
 
-        response =  client.request(web::http::methods::GET, url_image_0).get(); //Note: get() make this block
-        fmt::print("Image status code: {}\n", response.status_code());
-        if(response.status_code() != 200) return 2;
 
-        auto file = concurrency::streams::fstream::open_ostream(filename).get(); //Note: get() make this block
-        response.body().read_to_end(file.streambuf()).get(); //Note: get() make this block
-        fmt::print("Image saved as {}\n", filename);
+        Magick::Image image("http://www.bing.com" + url_image_0);
+        fmt::print("Image size: {}x{}\n", image.columns(), image.rows());
 
     } catch (web::http::http_exception &e) {
         fmt::print("Terminating by http_exception: {}\n", e.what());
