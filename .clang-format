@@ -1,0 +1,8 @@
+---
+Language: Cpp
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterNamespace: true
+    AfterFunction: true
+    BeforeCatch: false
+...
