@@ -1,6 +1,5 @@
 #include <cpprest/http_client.h>
 #include <fmt/printf.h>
-#include <Magick++.h>
 
 int main()
 {
@@ -26,19 +25,6 @@ int main()
         web::uri image_uri{url_image_0};
         auto filename = web::uri::split_query(image_uri.query())["id"];
         fmt::print("Image filename: {}\n", filename);
-
-
-        Magick::Image image("http://www.bing.com" + url_image_0);
-        fmt::print("Image size: {}x{}\n", image.columns(), image.rows());
-
-        std::vector<Magick::Drawable> text_to_draw;
-        text_to_draw.push_back(Magick::DrawableText{20, 20, "Hola"});
-        text_to_draw.push_back(Magick::DrawableFont{"UbuntuM", Magick::NormalStyle, 240, Magick::NormalStretch});
-        text_to_draw.push_back(Magick::DrawableStrokeColor(Magick::Color{"black"}));
-        text_to_draw.push_back(Magick::DrawableFillColor(Magick::Color{0,0,0,QuantumRange}));
-
-        image.draw(text_to_draw);
-        image.write(filename);
 
     } catch (web::http::http_exception &e) {
         fmt::print("Terminating by http_exception: {}\n", e.what());
