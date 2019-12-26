@@ -1,19 +1,30 @@
 #include <cpprest/http_client.h>
 #include <fmt/printf.h>
+#include <opencv2/core/cvstd.hpp>
 #include <opencv2/core/mat.hpp>
+#include <opencv2/freetype.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
 int main()
 {
   try {
-    cv::Mat img(512, 512, CV_8UC3, cv::Scalar(0));
+    cv::Mat img(512, 512, CV_8UC3, cv::Scalar::all(255));
 
-    cv::putText(img,                         // target image
-                "Hello, OpenCV!",            // text
-                cv::Point(10, img.rows / 2), // top-left position
-                cv::FONT_HERSHEY_DUPLEX, 1.0, CV_RGB(118, 185, 0), // font color
-                2);
+    cv::Ptr<cv::freetype::FreeType2> ft2;
+    ft2 = cv::freetype::createFreeType2();
+    ft2->loadFontData("mplus-1p-regular.ttf", 0);
+
+    int fontHeight = 54;
+    int thickness = -1;
+    int linestyleAntialiased = 16;
+
+    ft2->putText(img, "This is freetype", cv::Point(10, 200), fontHeight,
+                 cv::Scalar::all(0), thickness, linestyleAntialiased, true);
+
+    cv::putText(img, "This is Hershey", cv::Point(10, img.rows / 2),
+                cv::FONT_HERSHEY_DUPLEX, 2.0, CV_RGB(118, 185, 0), 2,
+                linestyleAntialiased);
 
     cv::imshow("Hello!", img);
     cv::waitKey();
