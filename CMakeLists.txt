@@ -46,9 +46,10 @@ conan_cmake_run(
         boost:without_thread=True
         boost:without_timer=True
         boost:without_type_erasure=True
-        boost:without_wave=True    
+        boost:without_wave=True
+        opencv:gtk=3
 )
 # -------------------------------------------
 
 add_executable(http_get main.cpp)
-target_link_libraries(http_get CONAN_PKG::cpprestsdk CONAN_PKG::fmt)
+target_link_libraries(http_get CONAN_PKG::cpprestsdk CONAN_PKG::fmt CONAN_PKG::opencv)
