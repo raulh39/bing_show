@@ -48,6 +48,10 @@ conan_cmake_run(
         boost:without_type_erasure=True
         boost:without_wave=True
         opencv:gtk=3
+        opencv:contrib=True
+        opencv:gstreamer=False
+        opencv:protobuf=False
+        harfbuzz:with_glib=False
 )
 # -------------------------------------------
 
