@@ -15,16 +15,23 @@ int main()
     web::http::client::http_client client("http://www.bing.com");
     web::uri_builder builder("/HPImageArchive.aspx");
     builder.append_query("format", "js").append_query("idx", "0").append_query("n", "1");
+    auto image_data_url = builder.to_string();
+    fmt::print("URL with image info: {}\n", image_data_url);
 
-    auto response = client.request(web::http::methods::GET, builder.to_string()).get(); // Note: get() make this block
+    auto response = client.request(web::http::methods::GET, image_data_url).get(); // Note: get() make this block
     fmt::print("HPImageArchive.aspx status code: {}\n", response.status_code());
     if (response.status_code() != 200)
       return 1;
     auto json = response.extract_json().get(); // Note: get() make this block
 
     // 2.- Parse JSON extracting url of the current (index 0) image and its name
-    auto url_image_0 = json["images"].at(0)["url"].as_string();
+    auto image_0 = json["images"].at(0);
+    auto copyright = image_0["copyright"].as_string();
+    auto title = image_0["title"].as_string();
+    auto url_image_0 = image_0["url"].as_string();
     fmt::print("URL image 0: {}\n", url_image_0);
+    fmt::print("copyright: {}\n", copyright);
+    fmt::print("title: {}\n", title);
 
     // We need to extract the "id" query component in the previous URL to use
     // it as the saved filename:
@@ -46,17 +53,25 @@ int main()
     ft2 = cv::freetype::createFreeType2();
     ft2->loadFontData("mplus-1p-regular.ttf", 0);
 
-    int fontHeight = 54;
-    int thickness = -1;
     int linestyleAntialiased = 16;
+    
+    int textFontHeight = 16;
+    cv::Point posTitle{10, img.rows-35};
+    int thicknessTitle = 1;
+    ft2->putText(img, title, posTitle, textFontHeight, cv::Scalar::all(0), thicknessTitle, linestyleAntialiased, true);
 
-    ft2->putText(img, "This is freetype", cv::Point(10, 200), fontHeight, cv::Scalar::all(0), thickness,
+    cv::Point posCopyright{10, img.rows - 15};
+    int thicknessCopyright = -1;
+    ft2->putText(img, copyright, posCopyright, textFontHeight, cv::Scalar::all(0), thicknessCopyright,
                  linestyleAntialiased, true);
 
-    cv::putText(img, "This is Hershey", cv::Point(10, img.rows / 2), cv::FONT_HERSHEY_DUPLEX, 2.0, CV_RGB(118, 185, 0),
-                2, linestyleAntialiased);
+    cv::Point posNumber{img.cols-60, 15};
+    int numberFontHeight = 64;
+    int thicknessNumber = 3;
+    ft2->putText(img, "1", posNumber, numberFontHeight, cv::Scalar::all(0), thicknessNumber, linestyleAntialiased,
+                 false);
 
-    cv::imshow("Hello!", img);
+    cv::imshow("Bing", img);
     cv::waitKey();
 
   } catch (web::http::http_exception &e) {

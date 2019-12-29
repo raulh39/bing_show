@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14.5)
-project(http_get LANGUAGES CXX VERSION 0.1.0)
+project(bing_show LANGUAGES CXX VERSION 0.1.0)
 
 # -------------------------------------------
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
@@ -55,5 +55,5 @@ conan_cmake_run(
 )
 # -------------------------------------------
 
-add_executable(http_get main.cpp)
-target_link_libraries(http_get CONAN_PKG::cpprestsdk CONAN_PKG::fmt CONAN_PKG::opencv)
+add_executable(bing_show main.cpp)
+target_link_libraries(bing_show CONAN_PKG::cpprestsdk CONAN_PKG::fmt CONAN_PKG::opencv)
